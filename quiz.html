@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .question {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option {
+            margin-bottom: 5px;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .next-button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .next-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div class="question" id="question">Question 1: What is 2 + 2?</div>
+        <div class="options" id="options">
+            <div class="option" onclick="checkAnswer(4)">4</div>
+            <div class="option" onclick="checkAnswer(3)">3</div>
+            <div class="option" onclick="checkAnswer(5)">5</div>
+            <div class="option" onclick="checkAnswer(2)">2</div>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button class="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is 2 + 2?", correctAnswer: 4 },
+            { question: "Which planet is known as the Red Planet?", correctAnswer: "Mars" },
+            // Add more questions as needed
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const feedbackElement = document.getElementById("feedback");
+
+            const currentQuestion = questions[currentQuestionIndex];
+
+            questionElement.textContent = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+
+            optionsElement.innerHTML = "";
+            currentQuestion.options.forEach((option) => {
+                const optionElement = document.createElement("div");
+                optionElement.textContent = option;
+                optionElement.className = "option";
+                optionElement.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(optionElement);
+            });
+
+            feedbackElement.textContent = "";
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const feedbackElement = document.getElementById("feedback");
+
+            if (selectedAnswer === currentQuestion.correctAnswer) {
+                feedbackElement.textContent = "Correct!";
+            } else {
+                feedbackElement.textContent = "Incorrect. Try again.";
+            }
+        }
+
+        function nextQuestion() {
+            const feedbackElement = document.getElementById("feedback");
+            feedbackElement.textContent = ""; // Clear previous feedback
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                alert("Quiz completed! You can add more questions or end the quiz here.");
+                // Optionally, reset the quiz or redirect the user to another page
+            }
+        }
+
+        // Load the first question when the page loads
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
